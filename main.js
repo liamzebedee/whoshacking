@@ -13,7 +13,10 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 340, height: 300, 
+    frame: false,
+    titleBarStyle: 'customButtonsOnHover', 
+  })
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({
@@ -21,6 +24,8 @@ function createWindow () {
     protocol: 'file:',
     slashes: true
   }))
+
+  electron.Menu.setApplicationMenu(null)
 
   // Open the DevTools.
   // mainWindow.webContents.openDevTools()
