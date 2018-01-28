@@ -4,6 +4,7 @@ const context = path.resolve(__dirname, 'src');
 
 
 module.exports = {
+  target: "electron",
   devtool: 'eval',
   entry: [
     './src/index'
@@ -22,7 +23,6 @@ module.exports = {
   module: {
     rules: [
       {
-        // include: path.resolve(__dirname, './src'),
         loaders: [
           'style-loader',
           'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]'

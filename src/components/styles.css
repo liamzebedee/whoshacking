@@ -18,14 +18,14 @@ body {
 .appWrap {
     width: 100%;
     height: 100%;
-    padding: 15px;
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 1; 
 }
 
 .feed {
     flex: 1;
+    padding-top: 12px;
 }
 
 .footer {
@@ -33,4 +33,80 @@ body {
     font-size: 11px;
     color: rgba(232,195,122,0.70);
     text-align: center;
+    padding: 15px;
+}
+
+
+.loginView {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
+
+.button {
+    /* Rectangle 3: */
+    border: 1px solid #E8C37A;
+    border-radius: 5px;
+    
+    /* Connect using GitHub: */
+    font-family: HelveticaNeue;
+    font-size: 14px;
+    color: #E8C37A;
+    text-align: center;
+    background: transparent;
+    
+    padding: 10px;
+    transition: all 250ms;
+}
+
+.button:hover {
+    background: rgb(185, 156, 98);
+    color: white;
+    cursor: pointer;
+    transform: translateY(2px);
+}
+
+.text {
+    font-family: HelveticaNeue;
+    font-size: 14px;
+    color: #E8C37A;
+}
+
+.updateFeed {
+    /* Rectangle 3: */
+    background: rgba(0, 0, 0, 0.40);
+    border-radius: 5px;
+    min-height: 50px;
+    margin: 10px;
+    padding: 10px;
+    
+    flex: 1;
+    align-items: center;
+    display: flex;
+
+    transition: all 250ms;
+}
+
+.updateFeed:hover .input::placeholder {
+    color: #B8B8B8;
+}
+
+.input {
+    transition: all 250ms;
+    
+    /* Rectangle 3: */
+    background: transparent;
+    font-size: 14px;
+
+    color: #9B9B9B;
+    border: none;
+    overflow: auto;
+    outline: none;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    resize: none
 }

@@ -1,8 +1,43 @@
 import {
-    observable
+    observable,
+    computed,
+    ObservableMap
 } from 'mobx';
 
+import store2 from 'store2';
+
+const d3req = require('d3-request')
+
+
+
+
+
+// ObservableMap
 export default class Model {
+    @observable isLoggedIn = false;
+
+    constructor() {
+        this.userSession = store2('userSession')
+    }
+
+    loadSession() {
+        this.userSession = store2('userSession')
+        if(this.userSession != null) {
+            this.isLoggedIn = true;
+        }
+    }
+
+    checkLogin() {
+        d3req.json('http://localhost:3000/user', (err, res) => {
+            let success = res['id']
+            if(success) {
+                store2('userSession', res)
+                this.loadSession()
+            }
+        })
+    }
+
+    @observable user;
     @observable feedItems = [
         {
             user: {
@@ -32,4 +67,8 @@ export default class Model {
             time: new Date
         }
     ];
+
+    get isLoggedIn() {
+        return this.userSession;
+    }
 }
