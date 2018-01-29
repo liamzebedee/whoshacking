@@ -8,6 +8,12 @@ body {
     height: 100%;
 }
 
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+
 * {
     box-sizing: border-box;
 }
@@ -25,7 +31,7 @@ body {
 
 .feed {
     flex: 1;
-    padding-top: 12px;
+    /* padding-top: 12px; */
 }
 
 .footer {
@@ -89,12 +95,21 @@ body {
     transition: all 250ms;
 }
 
+.updateFeed:hover,
+.input:active {
+    cursor: text;
+}
 .updateFeed:hover .input::placeholder {
     color: #B8B8B8;
 }
 
+.input:focus,
+.input:active {
+    color: #B8B8B8;
+}
+
 .input {
-    transition: all 250ms;
+    /* transition: all 250ms; */
     
     /* Rectangle 3: */
     background: transparent;
@@ -108,5 +123,12 @@ body {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    resize: none
+    resize: none;
+
+    width: 100%;
+
+    user-select: none;
+}
+
+textarea {
 }

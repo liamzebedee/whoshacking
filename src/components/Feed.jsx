@@ -24,16 +24,21 @@ function spotifyStyleTime(time) {
 }
 
 const Item = (props) => {
+    let avatar;
+    if(props.profile.photos.length) {
+        avatar = props.profile.photos[0].value;
+    }
+    
     return <div className={styles.item}>
         <div className={styles.avatar} style={{
-            backgroundImage: `url(${props.user.avatar})`
+            backgroundImage: `url(${avatar})`
         }}></div>
         <div className={styles.body}>
-            <div className={styles.username}>{props.user.username}</div>
+            <div className={styles.username}>{props.profile.username}</div>
             <div className={styles.stuff}>{props.stuff}</div>
         </div>
         <div className={styles.status}>
-            {props.user.online ?
+            {store.isUserOnline(props.profile) ?
             <img src="static/online.png"/> :
             spotifyStyleTime(props.time)}
         </div>

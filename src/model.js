@@ -3,72 +3,81 @@ import {
     computed,
     ObservableMap
 } from 'mobx';
-
-import store2 from 'store2';
-
 const d3req = require('d3-request')
+import store2 from 'store2';
+const io = require('socket.io-client')
+
+const $ = require('jquery');
 
 
+export const API_HOST = "http://localhost:3000";
 
-
-
-// ObservableMap
 export default class Model {
     @observable isLoggedIn = false;
+    @observable feedItems = [];
+    @observable online = new ObservableMap();
 
     constructor() {
-        this.userSession = store2('userSession')
+        this.loadSession()
+        this.connectRealtime()
+        this.loadPosts()
+    }
+
+    loadPosts() {
+        d3req.json(`${API_HOST}/activity`, (err, res) => {
+            this.feedItems = res
+        })
+    }
+
+    post(stuff) {
+        $.post({
+            url: `${API_HOST}/activity`,
+            data: {
+                stuff: stuff 
+            },
+        })
+    }
+
+    connectRealtime() {
+        this.socket = io(API_HOST);
+        this.socket.on('online', function(msg) {
+            this.online.set(msg.id, true);
+        });
+        this.socket.on('offline', function(msg) {
+            this.online.set(msg.id, false);
+        });
+    }
+
+    isUserOnline(user) {
+        if(user.id == this.userSession.id) return true;
+        return this.online.get(user.id);
     }
 
     loadSession() {
         this.userSession = store2('userSession')
+
+        // Optimistic. Disable during debugging.
+        this.isLoggedIn = true;
         if(this.userSession != null) {
-            this.isLoggedIn = true;
+            $.post({
+                url: `${API_HOST}/auth/login`,
+                data: {
+                    username: this.userSession.id,
+                    password: this.userSession.clientPassword,
+                },
+            }).then(res => {
+                this.isLoggedIn = true;
+            })
         }
     }
 
     checkLogin() {
-        d3req.json('http://localhost:3000/user', (err, res) => {
+        d3req.json(`${API_HOST}/user`, (err, res) => {
             let success = res['id']
             if(success) {
                 store2('userSession', res)
                 this.loadSession()
             }
         })
-    }
-
-    @observable user;
-    @observable feedItems = [
-        {
-            user: {
-                avatar: "https://avatars1.githubusercontent.com/u/584141?s=460&v=4",
-                username: "liamzebedee",
-                online: true
-            },
-            stuff: "Hacking on graphparse",
-            time: new Date
-        },
-        {
-            user: {
-                avatar: "https://avatars1.githubusercontent.com/u/6328589?s=460&v=4",
-                username: "twitchyliquid64",
-                online: true
-            },
-            stuff: "Hacking on subnet",
-            time: new Date
-        },
-        {
-            user: {
-                avatar: "https://avatars1.githubusercontent.com/u/6328589?s=460&v=4",
-                username: "twitchyliquid64",
-                online: false
-            },
-            stuff: "Hacking on subnet",
-            time: new Date
-        }
-    ];
-
-    get isLoggedIn() {
-        return this.userSession;
     }
 }

@@ -13,7 +13,11 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 340, height: 300, 
+  mainWindow = new BrowserWindow({
+    // width: 340, 
+    // height: 300, 
+    width: 800,
+    height: 600,
     frame: false,
     titleBarStyle: 'customButtonsOnHover', 
   })

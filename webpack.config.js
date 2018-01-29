@@ -6,6 +6,9 @@ const context = path.resolve(__dirname, 'src');
 module.exports = {
   target: "electron",
   devtool: 'eval',
+  
+  
+
   entry: [
     './src/index'
   ],
@@ -20,7 +23,13 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx']
   },
+
+  // TODO
+  // externals: ['ws', 'fs'],
+  
   module: {
+    // noParse: /ws/, // TODO
+
     rules: [
       {
         loaders: [
