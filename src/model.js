@@ -3,47 +3,84 @@ import {
     computed,
     ObservableMap
 } from 'mobx';
-const d3req = require('d3-request')
 import store2 from 'store2';
+
+const d3req = require('d3-request')
 const io = require('socket.io-client')
-
 const $ = require('jquery');
+import _ from 'underscore'
+import moment from 'moment';
 
+export const API_HOST = "http://0.0.0.0:3000";
+// export const API_HOST = "http://whoshacking.liamz.co";
+const MINUTE = 1000 * 60;
 
-export const API_HOST = "http://localhost:3000";
-
-export default class Model {
+class Model {
     @observable isLoggedIn = false;
     @observable feedItems = [];
-    @observable online = new ObservableMap();
+    @observable matesStatus = new ObservableMap();
+    @observable status = new ObservableMap();
+    projects = {};
 
     constructor() {
         this.loadSession()
-        this.connectRealtime()
-        this.loadPosts()
+
+        // Only update status max once per second.
+        // Much better than setTimeout, since this is called reactively, not proactively
+        this.updateHackingStatus = _.throttle(this._updateHackingStatus, MINUTE)
     }
 
-    loadPosts() {
-        d3req.json(`${API_HOST}/activity`, (err, res) => {
-            this.feedItems = res
-        })
+    getUser() {
+        return this.userSession;
     }
 
-    post(stuff) {
-        $.post({
-            url: `${API_HOST}/activity`,
-            data: {
-                stuff: stuff 
-            },
+    getStatus() {
+        return this.status;   
+    }
+    
+    notifyHacking(projectDir, name, url) {
+        console.log("Hacking on", name, url)
+
+        let project = this.projects[projectDir] || {};
+        this.projects[projectDir] = {
+            ...project,
+            name,
+            url,
+            lastUpdate: new Date
+        }
+
+        this.updateHackingStatus()
+    }
+
+    _updateHackingStatus() {
+        // Projects worked on within the past 10 mins
+        let currentProjects = Object.values(this.projects).filter(project => {
+            return moment(project.lastUpdate).isAfter(moment().subtract(10, 'minutes'))
         })
+        this.status = {
+            currentProjects,
+        }
+        this.socket.send('set status', this.status)
+    }
+
+    handleUserOnlineHacking(msg) {
+
+        // let myNotification = new Notification('Hacker online', {
+        //     body: `Your friend ${msg.username} started hacking`
+        // })
+        
+        // myNotification.onclick = () => {
+        //     console.log('Notification clicked')
+        // }
     }
 
     connectRealtime() {
-        this.socket = io(API_HOST);
-        this.socket.on('online', function(msg) {
-            this.online.set(msg.id, true);
+        this.socket = io(`${API_HOST}/?id=${this.userSession.id}&clientPassword=${this.userSession.clientPassword}`);
+
+        this.socket.on('hacking', function(msg) {
+            this.handleUserOnlineHacking(msg)
         });
-        this.socket.on('offline', function(msg) {
+        this.socket.on('not hacking', function(msg) {
             this.online.set(msg.id, false);
         });
     }
@@ -57,7 +94,8 @@ export default class Model {
         this.userSession = store2('userSession')
 
         // Optimistic. Disable during debugging.
-        this.isLoggedIn = true;
+        // this.isLoggedIn = true;
+
         if(this.userSession != null) {
             $.post({
                 url: `${API_HOST}/auth/login`,
@@ -67,6 +105,7 @@ export default class Model {
                 },
             }).then(res => {
                 this.isLoggedIn = true;
+                this.connectRealtime()
             })
         }
     }
@@ -75,9 +114,14 @@ export default class Model {
         d3req.json(`${API_HOST}/user`, (err, res) => {
             let success = res['id']
             if(success) {
-                store2('userSession', res)
+                store2('userSession', {
+                    ...res
+                })
                 this.loadSession()
             }
         })
     }
 }
+
+const model = new Model();
+export default model;

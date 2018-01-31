@@ -10,16 +10,27 @@ import styles from './styles.css';
 import Feed from './feed';
 import { API_HOST } from '../model';
 
+const shell = require('electron').shell;
+
+const ExternalLink = (props) => {
+  const handleClick = (ev) => {
+    ev.preventDefault();
+    shell.openExternal(ev.target.href);
+  }
+  return <a {...props} onClick={handleClick}>{props.children}</a>
+}
+
 @observer
 export default class App extends React.Component {
   render() {
     return <div className={styles.app}>
       <div className={styles.appWrap}>
-        {this.props.store.isLoggedIn ? 
+        {store.isLoggedIn ? 
         
         <div className={styles.feed}>
-          <UpdateFeed/>
+          <header className={styles.title}>Who’s hacking?</header>
           <Feed items={this.props.store.feedItems}/>
+          <FooterPane/>
         </div> : 
       
         <LoginView/>}
@@ -49,6 +60,47 @@ class LoginView extends React.Component {
         Connect using GitHub
       </button>
     </div>
+  }
+}
+
+@observer
+class FooterPane extends React.Component {
+  render() {
+    let avatar;
+    let store = window.store;
+    let user = store.getUser();
+    if(user.profile.photos.length) {
+        avatar = user.profile.photos[0].value;
+    }
+
+    let status = store.getStatus();
+
+    return <div className={styles.updatePaneWrap}><div className={styles.updatePane}>
+      <div className={styles.updatePaneAvatar} style={{
+            backgroundImage: `url(${avatar})`
+        }}></div>
+        
+      <div className={styles.status}><HackerStatus status={status}/></div>
+    </div></div>
+  }
+}
+
+class HackerStatus extends React.Component {
+  render() {
+    let str = "";
+    let projects = this.props.status.currentProjects;
+    
+    if(projects && projects.length) {
+      let project = projects[0];
+      if(project.url) {
+        str = <span>Hacking on <ExternalLink href={project.url}>{project.name}</ExternalLink></span>
+      } else {
+        str = <span>Hacking on {project.name} (top secret!)</span>
+      }
+    } else {
+      str = <span>Not hacking on anything</span>
+    }
+    return str;
   }
 }
 

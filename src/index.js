@@ -5,7 +5,12 @@ import DevTools from "mobx-react-devtools";
 import App from "./components/App";
 import Model from "./model";
 
-const store = new Model();
+import { runGitWatcher } from './monitor';
+
+const store = Model;
+window.store = store;
+
+runGitWatcher()
 
 render(
   <div>
@@ -15,4 +20,3 @@ render(
   document.getElementById("root")
 );
 
-window.store = store;

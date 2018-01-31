@@ -34,6 +34,20 @@ body {
     /* padding-top: 12px; */
 }
 
+.title {
+    /* Who’s hacking?: */
+    font-family: HelveticaNeue-Bold;
+    font-size: 19px;
+    color: #E8C37A;
+    user-select: none;
+
+    /* Line: */
+    border-bottom: 1px solid rgba(0,0,0,0.40);
+    
+    padding: 15px 10px;
+    margin: 5px;
+}
+
 .footer {
     font-family: HelveticaNeue-CondensedBold;
     font-size: 11px;
@@ -78,6 +92,66 @@ body {
     font-family: HelveticaNeue;
     font-size: 14px;
     color: #E8C37A;
+}
+
+
+.updatePaneWrap {
+    height: 50px;
+    background: #0E2562;
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.updatePane {
+    /* Rectangle 3: */
+    background: rgba(0,0,0,0.40);
+
+    border-top: 1px solid rgba(207,181,129,0.20);
+    min-height: 50px;
+
+    padding: 10px;
+    
+    /* flex: 1; */
+    align-items: center;
+    display: flex;
+
+    position: fixed; 
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+
+    transition: all 250ms;
+}
+
+.updatePaneAvatar {
+    
+    width: 28px;
+    height: 28px;
+    margin-right: 10px;
+    border-radius: 50%;
+    
+    background-size: contain;
+
+    user-select: none;
+    cursor: pointer;
+}
+
+.status span,
+.status a {
+    /* Hacking on graphpars: */
+    opacity: 0.8;
+    font-family: HelveticaNeue;
+    font-size: 14px;
+    color: #9B9B9B;
+    transition: all 250ms;  
+}
+
+.updatePane:hover .status span,
+.updatePane:hover .status a {
+    color: white;
 }
 
 .updateFeed {

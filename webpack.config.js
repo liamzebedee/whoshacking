@@ -26,6 +26,9 @@ module.exports = {
 
   // TODO
   // externals: ['ws', 'fs'],
+  externals: {
+    nodegit: 'commonjs nodegit'
+  },
   
   module: {
     // noParse: /ws/, // TODO

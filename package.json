@@ -5,7 +5,8 @@
   "main": "main.js",
   "scripts": {
     "server": "node_modules/.bin/webpack-dev-server",
-    "start": "electron ."
+    "start": "electron .",
+    "rebuild": "node_modules/.bin/electron-rebuild"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -18,16 +19,20 @@
   "author": "GitHub",
   "license": "CC0-1.0",
   "devDependencies": {
-    "electron": "~1.7.8"
+    "electron": "~1.7.8",
+    "electron-rebuild": "^1.7.3"
   },
   "dependencies": {
+    "arch": "^2.1.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-plugin-react-css-modules": "^3.3.3",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-plugin-transform-styles": "^0.0.3",
     "babel-preset-es2015": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
     "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "bufferutil": "^3.0.3",
     "css-loader": "^0.28.9",
@@ -47,6 +52,7 @@
     "store2": "^2.6.0",
     "style-loader": "^0.20.1",
     "superagent": "^3.8.2",
+    "underscore": "^1.8.3",
     "utf-8-validate": "^4.0.0",
     "webpack": "^3.10.0",
     "webpack-dev-server": "^2.11.1"
