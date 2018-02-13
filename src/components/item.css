@@ -4,12 +4,12 @@
     justify-content: center;
     padding: 10px 15px;
 
-    /* transition: background 250ms; */
+    transition: background 250ms;
 }
 
 .item:hover {
     /* Rectangle 2: */
-    /* background: rgba(239,239,239,0.20); */
+    background: rgba(239,239,239,0.20);
 }
 
 .avatar {

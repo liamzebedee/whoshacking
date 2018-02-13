@@ -13,23 +13,23 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-let debug
-debug = true
-
-
-// let icon = nativeImage.createFromPath(path.join(__dirname, 'static/icon.png'))
-
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({
+  let winOpts = {
     width: 340, 
     height: 300, 
-    width: 800,
-    height: 600,
     frame: false,
     titleBarStyle: 'customButtonsOnHover', 
     title: '',
-  })
+  };
+
+  if(process.env.ELECTRON_ENV == 'development') {
+    winOpts = Object.assign(winOpts, {
+      width: 800,
+      height: 600,
+    })
+  }
+  mainWindow = new BrowserWindow(winOpts)
 
   // and load the index.html of the app.
   mainWindow.loadURL(url.format({

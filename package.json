@@ -1,12 +1,19 @@
 {
-  "name": "electron-quick-start",
-  "version": "1.0.0",
-  "description": "A minimal Electron application",
+  "name": "whoshacking",
+  "version": "1.1.0",
+  "description": "",
   "main": "main.js",
   "scripts": {
     "server": "node_modules/.bin/webpack-dev-server --host localhost --port 8081",
-    "start": "electron .",
-    "rebuild": "node_modules/.bin/electron-rebuild"
+    "start": "ELECTRON_ENV=development electron .",
+    "buildwebpack": "node_modules/.bin/webpack --config=webpack.config.js --env=production",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "co.liamz.whoshacking",
+    "productName": "Who's Hacking",
+    "copyright": "Copyright © 2018 Liam Zebedee Edwards-Playne"
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -20,6 +27,7 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "~1.7.8",
+    "electron-builder": "^19.56.0",
     "electron-rebuild": "^1.7.3"
   },
   "dependencies": {
