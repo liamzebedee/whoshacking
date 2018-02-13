@@ -2,14 +2,14 @@
     display: flex; 
     flex-direction: row;
     justify-content: center;
-    padding: 12px 15px;
+    padding: 10px 15px;
 
-    transition: background 250ms;
+    /* transition: background 250ms; */
 }
 
 .item:hover {
     /* Rectangle 2: */
-    background: rgba(239,239,239,0.20);
+    /* background: rgba(239,239,239,0.20); */
 }
 
 .avatar {
@@ -45,10 +45,23 @@
 }
 
 
-.status {
-    align-self: center;
-    
-    font-family: HelveticaNeue;
-    font-size: 12px;
+.status span,
+.status a,
+.timeIndicator {
+    /* font-family: HelveticaNeue;
+    font-size: 12px; */
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
     color: rgba(232,195,122,0.80);
+    transition: all 250ms;
+    user-select: none;
 }
+
+/* 
+.status span,
+.status a {
+    opacity: 0.8;
+    
+    color: #9B9B9B;
+    user-select: none;
+} */

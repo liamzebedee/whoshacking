@@ -1,9 +1,13 @@
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,600,700,900');
+
+
 html {
     background: #0E2562;
 }
 
 body {
     -webkit-app-region: drag;
+    user-select: none;
     width: 100%;
     height: 100%;
 }
@@ -36,20 +40,23 @@ body {
 
 .title {
     /* Who’s hacking?: */
-    font-family: HelveticaNeue-Bold;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 700;
     font-size: 19px;
     color: #E8C37A;
     user-select: none;
 
     /* Line: */
-    border-bottom: 1px solid rgba(0,0,0,0.40);
+    /* border-bottom: 1px solid rgba(0,0,0,0.40); */
     
-    padding: 15px 10px;
+    padding: 10px 10px;
     margin: 5px;
 }
 
 .footer {
-    font-family: HelveticaNeue-CondensedBold;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+
     font-size: 11px;
     color: rgba(232,195,122,0.70);
     text-align: center;
@@ -71,7 +78,7 @@ body {
     border-radius: 5px;
     
     /* Connect using GitHub: */
-    font-family: HelveticaNeue;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
     color: #E8C37A;
     text-align: center;
@@ -89,7 +96,7 @@ body {
 }
 
 .text {
-    font-family: HelveticaNeue;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
     color: #E8C37A;
 }
@@ -143,14 +150,18 @@ body {
 .status a {
     /* Hacking on graphpars: */
     opacity: 0.8;
-    font-family: HelveticaNeue;
+    font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
     color: #9B9B9B;
-    transition: all 250ms;  
+    user-select: none;
 }
 
 .updatePane:hover .status span,
 .updatePane:hover .status a {
+    color: white;
+}
+
+.updatePane .status a:hover {
     color: white;
 }
 
@@ -202,7 +213,4 @@ body {
     width: 100%;
 
     user-select: none;
-}
-
-textarea {
 }

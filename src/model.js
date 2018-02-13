@@ -1,7 +1,7 @@
 import {
     observable,
     computed,
-    ObservableMap
+    ObservableMap,
 } from 'mobx';
 import store2 from 'store2';
 
@@ -18,16 +18,52 @@ const MINUTE = 1000 * 60;
 class Model {
     @observable isLoggedIn = false;
     @observable feedItems = [];
-    @observable matesStatus = new ObservableMap();
+    @observable users = observable.array();
     @observable status = new ObservableMap();
     projects = {};
 
     constructor() {
         this.loadSession()
 
-        // Only update status max once per second.
+        // Only update status max once per minute.
         // Much better than setTimeout, since this is called reactively, not proactively
         this.updateHackingStatus = _.throttle(this._updateHackingStatus, MINUTE)
+
+        this.users = [
+            {
+                id: 1,
+                profile: {
+                    username: "twitchyliquid64",
+                    photos: [
+                        { value: "https://avatars1.githubusercontent.com/u/6328589?s=460&v=4" }
+                    ]
+                },
+                statuses: [
+                    {
+                        time: new Date,
+                        currentProjects: []
+                    }
+                ]
+            },
+            {
+                id: 1,
+                profile: {
+                    username: "squishykid",
+                    photos: [
+                        { value: "https://avatars2.githubusercontent.com/u/2177912?s=460&v=4" }
+                    ]
+                },
+                statuses: [
+                    {
+                        time: moment().subtract(15, 'm').subtract(30, 's').toDate(),
+                        currentProjects: [{
+                            name: "swag",
+                            url: "https://liamz.co"
+                        }]
+                    }
+                ]
+            }
+        ]
     }
 
     getUser() {
@@ -60,11 +96,20 @@ class Model {
         this.status = {
             currentProjects,
         }
-        this.socket.send('set status', this.status)
+        this.socket.send('current status', this.status)
     }
 
-    handleUserOnlineHacking(msg) {
+    handleUserHacking(msg) {
+        // let myNotification = new Notification('Hacker online', {
+        //     body: `Your friend ${msg.username} started hacking`
+        // })
+        
+        // myNotification.onclick = () => {
+        //     console.log('Notification clicked')
+        // }
+    }
 
+    handleUserNotHacking(msg) {
         // let myNotification = new Notification('Hacker online', {
         //     body: `Your friend ${msg.username} started hacking`
         // })
@@ -77,17 +122,19 @@ class Model {
     connectRealtime() {
         this.socket = io(`${API_HOST}/?id=${this.userSession.id}&clientPassword=${this.userSession.clientPassword}`);
 
-        this.socket.on('hacking', function(msg) {
-            this.handleUserOnlineHacking(msg)
-        });
-        this.socket.on('not hacking', function(msg) {
-            this.online.set(msg.id, false);
+        this.socket.on('status updated', function(msg) {
+            console.log(msg)
         });
     }
 
     isUserOnline(user) {
         if(user.id == this.userSession.id) return true;
-        return this.online.get(user.id);
+        user = _.findWhere(this.users, { id: user.id })
+        if(user) {
+            return moment(user.statuses[0].time).isAfter(moment().subtract(10, 'minutes'))
+        } else {
+            return false
+        }
     }
 
     loadSession() {
@@ -124,4 +171,9 @@ class Model {
 }
 
 const model = new Model();
+
+
+
+
+
 export default model;

@@ -3,6 +3,8 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+const Tray = electron.Tray;
+const nativeImage = electron.nativeImage
 
 const path = require('path')
 const url = require('url')
@@ -14,6 +16,9 @@ let mainWindow
 let debug
 debug = true
 
+
+// let icon = nativeImage.createFromPath(path.join(__dirname, 'static/icon.png'))
+
 function createWindow () {
   // Create the browser window.
   mainWindow = new BrowserWindow({
@@ -23,6 +28,7 @@ function createWindow () {
     height: 600,
     frame: false,
     titleBarStyle: 'customButtonsOnHover', 
+    title: '',
   })
 
   // and load the index.html of the app.

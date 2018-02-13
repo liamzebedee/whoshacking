@@ -10,15 +10,8 @@ import styles from './styles.css';
 import Feed from './feed';
 import { API_HOST } from '../model';
 
-const shell = require('electron').shell;
+import HackerStatus from './HackerStatus';
 
-const ExternalLink = (props) => {
-  const handleClick = (ev) => {
-    ev.preventDefault();
-    shell.openExternal(ev.target.href);
-  }
-  return <a {...props} onClick={handleClick}>{props.children}</a>
-}
 
 @observer
 export default class App extends React.Component {
@@ -29,12 +22,11 @@ export default class App extends React.Component {
         
         <div className={styles.feed}>
           <header className={styles.title}>Who’s hacking?</header>
-          <Feed items={this.props.store.feedItems}/>
+          <Feed/>
           <FooterPane/>
         </div> : 
       
         <LoginView/>}
-        {/* <footer className={styles.footer}>>hackfeed</footer> */}
       </div>
     </div>
   }
@@ -85,37 +77,19 @@ class FooterPane extends React.Component {
   }
 }
 
-class HackerStatus extends React.Component {
-  render() {
-    let str = "";
-    let projects = this.props.status.currentProjects;
-    
-    if(projects && projects.length) {
-      let project = projects[0];
-      if(project.url) {
-        str = <span>Hacking on <ExternalLink href={project.url}>{project.name}</ExternalLink></span>
-      } else {
-        str = <span>Hacking on {project.name} (top secret!)</span>
-      }
-    } else {
-      str = <span>Not hacking on anything</span>
-    }
-    return str;
-  }
-}
 
-class UpdateFeed extends React.Component {
-  state = {
-    transition: 'height 250ms'
-  }
+// class UpdateFeed extends React.Component {
+//   state = {
+//     transition: 'height 250ms'
+//   }
 
-  focusInput() {
-    this.textarea.focus()
-  }
+//   focusInput() {
+//     this.textarea.focus()
+//   }
 
-  render() {
-    return <div onClick={this.focusInput} className={styles.updateFeed}>
-      <TextareaAutosize onClick={this.focusInput} ref={ref => this.textarea = ref} style={this.state.resizeStyles} onResize={this.checkResize}  className={styles.input} placeholder="Type something… "></TextareaAutosize>
-    </div>
-  }
-}
+//   render() {
+//     return <div onClick={this.focusInput} className={styles.updateFeed}>
+//       <TextareaAutosize onClick={this.focusInput} ref={ref => this.textarea = ref} style={this.state.resizeStyles} onResize={this.checkResize}  className={styles.input} placeholder="Type something… "></TextareaAutosize>
+//     </div>
+//   }
+// }

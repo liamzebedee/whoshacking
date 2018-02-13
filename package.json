@@ -4,7 +4,7 @@
   "description": "A minimal Electron application",
   "main": "main.js",
   "scripts": {
-    "server": "node_modules/.bin/webpack-dev-server",
+    "server": "node_modules/.bin/webpack-dev-server --host localhost --port 8081",
     "start": "electron .",
     "rebuild": "node_modules/.bin/electron-rebuild"
   },
@@ -35,6 +35,7 @@
     "babel-preset-stage-0": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "bufferutil": "^3.0.3",
+    "chokidar": "^2.0.0",
     "css-loader": "^0.28.9",
     "d3-request": "^1.0.6",
     "draft-js": "^0.10.5",

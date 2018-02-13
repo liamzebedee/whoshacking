@@ -7,8 +7,6 @@ module.exports = {
   target: "electron",
   devtool: 'eval',
   
-  
-
   entry: [
     './src/index'
   ],

@@ -1,17 +1,16 @@
-general algo:
-    hacking = activity in past 10 mins
-    activity = hacked on a repo
-    currentrepos = those that are hacked on in the past 10 mins
-
-
-
 server:
-process hacking on/off into database updates
 create an activity changefeed and send through socketio
 upload and make sure it fucking works
 
 client:
 bundle into app to distribute to nick and tom
+
+
+
+options:
+- poll `git ls-files --debug` every 5s
+- ask perm to increase number of potential file watchers (macOS, linux, windows)
+- be more specific with what we watch <----
 
 
 
