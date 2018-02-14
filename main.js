@@ -6,6 +6,9 @@ const BrowserWindow = electron.BrowserWindow
 const Tray = electron.Tray;
 const nativeImage = electron.nativeImage
 
+const Menu = electron.Menu;
+
+
 const path = require('path')
 const url = require('url')
 
@@ -13,13 +16,52 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
-import { autoUpdater } from "electron-updater"
-autoUpdater.checkForUpdatesAndNotify()
+const autoUpdater = require("electron-updater").autoUpdater;
+const log = require('electron-log');
+
+function sendStatusToWindow(text) {
+  log.info(text);
+  mainWindow.webContents.send('message', text);
+}
+
+function updater() {
+  autoUpdater.logger = log;
+  autoUpdater.logger.transports.file.level = 'info';
+  log.info('App starting...');
+
+  autoUpdater.on('checking-for-update', () => {
+    sendStatusToWindow('Checking for update...');
+  })
+  autoUpdater.on('update-available', (info) => {
+    sendStatusToWindow('Update available.');
+  })
+  autoUpdater.on('update-not-available', (info) => {
+    sendStatusToWindow('Update not available.');
+  })
+  autoUpdater.on('error', (err) => {
+    sendStatusToWindow('Error in auto-updater. ' + err);
+  })
+  autoUpdater.on('download-progress', (progressObj) => {
+    let log_message = "Download speed: " + progressObj.bytesPerSecond;
+    log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
+    log_message = log_message + ' (' + progressObj.transferred + "/" + progressObj.total + ')';
+    sendStatusToWindow(log_message);
+  })
+  autoUpdater.on('update-downloaded', (info) => {
+    sendStatusToWindow('Update downloaded');
+    autoUpdater.on('update-downloaded', (info) => {
+      autoUpdater.quitAndInstall();  
+    })
+  });
+
+  
+  autoUpdater.checkForUpdatesAndNotify()
+
+}
 
 function createWindow () {
   console.log(process.env.ELECTRON_ENV)
-  
-  
+
   // Create the browser window.
   let winOpts = {
     width: 340, 
@@ -45,10 +87,37 @@ function createWindow () {
     partition: 'persist:main',
   }))
 
-  electron.Menu.setApplicationMenu(null)
+  var template = [{
+    label: "Who's Hacking",
+    submenu: [
+        // { label: "About", selector: "orderFrontStandardAboutPanel:" },
+        // { type: "separator" },
+        { label: "Quit", accelerator: "Command+Q", click: function() { app.quit(); }}
+    ]}, {
+    label: "Edit",
+    submenu: [
+        { label: "Undo", accelerator: "CmdOrCtrl+Z", selector: "undo:" },
+        { label: "Redo", accelerator: "Shift+CmdOrCtrl+Z", selector: "redo:" },
+        { type: "separator" },
+        { label: "Cut", accelerator: "CmdOrCtrl+X", selector: "cut:" },
+        { label: "Copy", accelerator: "CmdOrCtrl+C", selector: "copy:" },
+        { label: "Paste", accelerator: "CmdOrCtrl+V", selector: "paste:" },
+        { label: "Select All", accelerator: "CmdOrCtrl+A", selector: "selectAll:" }
+    ]},
+    { label: "Dev",
+    submenu: [
+      {role: 'toggledevtools'},
+    ]},
+  ];
+
+  // Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+
+  electron.Menu.setApplicationMenu(Menu.buildFromTemplate(template));
 
   // Open the DevTools.
-  // mainWindow.webContents.openDevTools()
+  if(process.env.ELECTRON_ENV == 'development') {
+    mainWindow.webContents.openDevTools()
+  }
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -62,7 +131,10 @@ function createWindow () {
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  autoUpdater.checkForUpdatesAndNotify();
+})
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {

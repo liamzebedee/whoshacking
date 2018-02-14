@@ -8,8 +8,15 @@
     <div id="root"></div>
     
     <script>
+      document.addEventListener("keydown", function (e) {
+        if (e.which === 123) {
+          require('electron').remote.getCurrentWindow().toggleDevTools();
+        }
+      });
+
       if(process.env.ELECTRON_ENV != 'development') {
-        require('./dist/bundle.js')
+        require('./build/bundle.js')
+        // addScript("https://whoshacking.liamz.co/alpha-build.js")
       } else {
         function addScript(src) {
           var s = document.createElement('script');

@@ -40,11 +40,10 @@ class Model {
         // Much better than setTimeout, since this is called reactively, not proactively
         
         this.updateHackingStatus = _.throttle(this._updateHackingStatus, MINUTE)
-        if(process.env.ELECTRON_ENV === 'development') {
-            this.updateHackingStatus = this._updateHackingStatus;
-        }
 
         if(process.env.ELECTRON_ENV === 'development') {
+            this.updateHackingStatus = this._updateHackingStatus;
+            
             this.users = mock.users;
             this.status = mock.myStatus;
             setTimeout(() => {
@@ -90,12 +89,16 @@ class Model {
     connectRealtime() {
         this.socket = io(`${API_HOST}/?id=${this.userSession.id}&clientPassword=${this.userSession.clientPassword}`);
         this.socket.on('connect', () => {
+            this.socket.emit('get statuses')
+        })
+        this.socket.on('user statuses', (users) => {
+            this.users = users;
         })
         this.socket.on('error', (error) => {
             console.error(error)
         });
         this.socket.on('status updated', function(msg) {
-            
+            this.updateStatusOfUser(msg.statusEvent)
         });
     }
 

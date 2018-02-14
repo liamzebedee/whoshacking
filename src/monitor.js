@@ -4,6 +4,8 @@ const os = require('os');
 const path = require('path'); 
 const { URL } = require('url');
 
+import { getAppPath } from './util';
+
 import store from './store'; 
   
 
@@ -54,11 +56,15 @@ function onRepoUpdate(gitDir) {
 export function runGitWatcher() {
     let arch = getGOARCH();
     let os = getGOOS();
-    let cmd = `./vendor/gitmon-${os}-${arch}`;
 
-    console.log(`Spawning git watcher: ${cmd}`)
-    var ls    = spawn(cmd);
+    let cmdPath = path.join(getAppPath(), `/vendor/gitmon-${os}-${arch}`);
+
+    console.log(`Spawning git watcher: ${cmdPath}`)
+    var ls    = spawn(cmdPath);
     
+    ls.on('error', (ev) => {
+        console.error(ev)
+    })
     ls.stdout.on('data', function (data) {   
         // console.log('stdout : ' + data.toString());
     });

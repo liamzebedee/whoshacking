@@ -1,4 +1,5 @@
 import _ from 'underscore';
+const electron = require('electron').remote;
 
 const dateKeys = [
     "time",
@@ -28,4 +29,16 @@ function _parseIntoDates(obj) {
 
 export function parseIntoDates(obj) {
     return _parseIntoDates(clone(obj))
+}
+
+
+
+export function getAppPath() {
+    let appPath = electron.app.getAppPath()
+
+    if(process.env.ELECTRON_ENV == 'development') {
+        return appPath;
+    } else {
+        return appPath.replace('app.asar', 'app.asar.unpacked')
+    }
 }

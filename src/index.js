@@ -12,6 +12,12 @@ window.store = store;
 
 runGitWatcher()
 
+// const {ipcRenderer} = require('electron');
+
+// ipcRenderer.on('message', function(event, text) {
+//   console.log(event, text)
+// })
+
 render(
   <div>
     {/* <DevTools /> */}

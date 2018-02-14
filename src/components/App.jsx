@@ -13,8 +13,14 @@ import { API_HOST } from '../store';
 import HackerStatus from './HackerStatus';
 
 
+
+
+
 @observer
 export default class App extends React.Component {
+  componentDidMount() {
+  }
+
   render() {
     return <div className={styles.app}>
       <div className={styles.appWrap}>
