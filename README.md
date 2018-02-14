@@ -1,5 +1,12 @@
-hackstream
-==========
+Who's Hacking
+=============
+
+![logo](static/icon-dev.png)
+
+More to come. License is not published yet.
+
+
+## Tech
 
  - Electron
  - Webpack
