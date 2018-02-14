@@ -13,7 +13,22 @@
   "build": {
     "appId": "co.liamz.whoshacking",
     "productName": "Who's Hacking",
-    "copyright": "Copyright © 2018 Liam Zebedee Edwards-Playne"
+    "copyright": "Copyright © 2018 Liam Zebedee Edwards-Playne",
+    "compression": "store",
+    "files": [
+      "static/",
+      "vendor/",
+      "build/",
+      "index.html",
+      "main.js",
+      "renderer.js"
+    ],
+    "publish": {
+      "provider": "github",
+      "repo": "https://github.com/liamzebedee/whoshacking",
+      "owner": "liamzebedee",
+      "releaseType": "draft"
+    }
   },
   "repository": "https://github.com/electron/electron-quick-start",
   "keywords": [
@@ -57,6 +72,7 @@
     "react": "^16.2.0",
     "react-autosize-textarea": "^3.0.2",
     "react-dom": "^16.2.0",
+    "react-flip-move": "^3.0.1",
     "socket.io-client": "^2.0.4",
     "store2": "^2.6.0",
     "style-loader": "^0.20.1",

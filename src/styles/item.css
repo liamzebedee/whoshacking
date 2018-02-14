@@ -1,0 +1,72 @@
+.item {
+    display: flex; 
+    flex-direction: row;
+    justify-content: center;
+    padding: 10px 15px;
+
+    transition: background 250ms;
+}
+
+.item:hover {
+    /* Rectangle 2: */
+    /* background: rgba(239,239,239,0.20); */
+    /* 0.1 opacity and I'm about to orgasm */
+    background: rgba(239,239,239,0.10);
+}
+
+.avatar {
+    width: 36px;
+    height: 36px;
+    margin-right: 10px;
+    border-radius: 50%;
+    
+    background-size: contain;
+
+    user-select: none;
+    cursor: pointer;
+}
+
+.body {
+    flex: 1;
+}
+
+.username {
+    font-family: HelveticaNeue-Bold;
+    font-size: 15px;
+    color: #E8C37A;
+
+    padding-bottom: 6px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.stuff {
+    font-family: HelveticaNeue;
+    font-size: 12px;
+    color: rgba(232,195,122,0.80);
+}
+
+
+.status span,
+.status a,
+.timeIndicator {
+    /* font-family: HelveticaNeue;
+    font-size: 12px; */
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    color: rgba(232,195,122,0.80);
+    transition: all 250ms;
+    user-select: none;
+}
+
+.status a:hover {
+    color: #E8C37A;
+}
+
+/* 
+.project {
+    background: rgb(32,50,98);
+    border-radius: 5px;
+    padding: 4px;
+    margin: 0 2px;
+} */

@@ -1,0 +1,1 @@
+cp ~/go/src/github.com/liamzebedee/gitmon/dist/* .

@@ -13,7 +13,13 @@ const url = require('url')
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow
 
+import { autoUpdater } from "electron-updater"
+autoUpdater.checkForUpdatesAndNotify()
+
 function createWindow () {
+  console.log(process.env.ELECTRON_ENV)
+  
+  
   // Create the browser window.
   let winOpts = {
     width: 340, 

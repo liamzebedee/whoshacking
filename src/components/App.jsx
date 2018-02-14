@@ -4,11 +4,11 @@ import TextareaAutosize from 'react-autosize-textarea';
 import electron from 'electron';
 const BrowserWindow = electron.remote.BrowserWindow;
 
-import 'normalize.css';
-import styles from './styles.css';
+import '../styles/normalize.css';
+import styles from '../styles/app.css';
 
 import Feed from './feed';
-import { API_HOST } from '../model';
+import { API_HOST } from '../store';
 
 import HackerStatus from './HackerStatus';
 
@@ -38,7 +38,10 @@ class LoginView extends React.Component {
       width: 800, 
       height: 600,
       partition: 'persist:main',
+      cache: null
     })
+    win.webContents.session.clearStorageData()
+
     win.on('close', () => {
       store.checkLogin()
     })
@@ -67,12 +70,17 @@ class FooterPane extends React.Component {
 
     let status = store.getStatus();
 
-    return <div className={styles.updatePaneWrap}><div className={styles.updatePane}>
-      <div className={styles.updatePaneAvatar} style={{
+    return <div className={styles.footerPaneWrap}><div className={styles.footerPane}>
+      <div className={styles.footerPaneAvatarCtn}>
+        <div className={styles.footerPaneAvatar} style={{
             backgroundImage: `url(${avatar})`
         }}></div>
         
-      <div className={styles.status}><HackerStatus status={status}/></div>
+        { store.isConnected ? <img src="./static/online-small.png"/> : null }
+      </div>
+      
+        
+      <div className={styles.footerPaneStatus}><HackerStatus status={status}/></div>
     </div></div>
   }
 }

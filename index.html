@@ -7,13 +7,18 @@
   <body>
     <div id="root"></div>
     
-    <!-- <script src="http://localhost:8081/webpack-dev-server.js"></script> -->
-    <!-- <script src="http://localhost:8081/static/bundle.js"></script> -->
-
     <script>
-      // if(process.env.ELECTRON_ENV != 'development') {
+      if(process.env.ELECTRON_ENV != 'development') {
         require('./dist/bundle.js')
-      // }
+      } else {
+        function addScript(src) {
+          var s = document.createElement('script');
+          s.setAttribute('src', src);
+          document.head.appendChild(s);
+        }
+        addScript("http://localhost:8081/webpack-dev-server.js")
+        addScript("http://localhost:8081/static/bundle.js")
+      }
       // require('./renderer.js')
     </script>
   </body>

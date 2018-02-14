@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path'); 
 const { URL } = require('url');
 
-import store from './model'; 
+import store from './store'; 
   
 
 let activeRepos = {};

@@ -3,7 +3,7 @@ import { render } from "react-dom";
 import DevTools from "mobx-react-devtools";
 
 import App from "./components/App";
-import Model from "./model";
+import Model from "./store";
 
 import { runGitWatcher } from './monitor';
 

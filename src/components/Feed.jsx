@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import styles from './item.css';
+import styles from '../styles/item.css';
 import { observer } from "mobx-react";
 import _ from 'underscore';
 
 import moment from 'moment';
 import HackerStatus from './HackerStatus';
+import FlipMove from 'react-flip-move';
 
 
 @observer
@@ -17,7 +18,9 @@ export default class Feed extends React.Component {
         });
 
         return <div>
-            {userActivity.map((item, i) => <Item key={i} {...item}/>)}
+            <FlipMove duration={500} easing="ease-out">
+                {userActivity.map((item, i) => <Item key={item.id} {...item}/>)}
+            </FlipMove>
         </div>
     }
 }
@@ -37,28 +40,32 @@ function isOnline(time) {
     return moment(time).isAfter(moment().subtract(15, 'minutes'));
 }
 
-const Item = (props) => {
-    let avatar;
-    if(props.profile.photos.length) {
-        avatar = props.profile.photos[0].value;
-    }
+class Item extends React.Component {
+    render() {
+        let props = this.props;
+        
+        let avatar;
+        if(props.profile.photos.length) {
+            avatar = props.profile.photos[0].value;
+        }
 
-    let latestStatus = props.statuses[0];
-    
-    return <div className={styles.item}>
-        <div className={styles.avatar} style={{
-            backgroundImage: `url(${avatar})`
-        }}></div>
-        <div className={styles.body}>
-            <div className={styles.username}>{props.profile.username}</div>
-            <div className={styles.status}>
-                <HackerStatus status={latestStatus}/>
+        let latestStatus = props.statuses[0];
+        
+        return <div className={styles.item}>
+            <div className={styles.avatar} style={{
+                backgroundImage: `url(${avatar})`
+            }}></div>
+            <div className={styles.body}>
+                <div className={styles.username}>{props.profile.username}</div>
+                <div className={styles.status}>
+                    <HackerStatus status={latestStatus}/>
+                </div>
+            </div>
+            <div className={styles.timeIndicator}>
+                <TimeIndicator time={latestStatus.time}/>
             </div>
         </div>
-        <div className={styles.timeIndicator}>
-            <TimeIndicator time={latestStatus.time}/>
-        </div>
-    </div>
+    }
 }
 
 class TimeIndicator extends React.Component {
