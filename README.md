@@ -3,8 +3,7 @@ Who's Hacking
 
 ![logo](static/icon-dev.png)
 
-More to come. License is not published yet.
-
+https://liamz.co/blog/building-spotifys-whos-listening-for-hackers/
 
 ## Tech
 
